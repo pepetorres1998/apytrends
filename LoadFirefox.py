@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from bs4 import BeautifulSoup as bf
+import pandas as pd
 
 class LoadFirefox:
     """ Load driver and browser in Firefox """
@@ -27,9 +29,33 @@ class LoadFirefox:
             print('Exception ocurred when Initializing the browser')
             browser.close()
 
-    def get_trending_realtime(self):
+    def get_trending_realtime(self, geo='US', cat='all'):
         """ Send the GET request to trending realtime """
-        self.browser.get('https://trends.google.com.mx/trends/trendingsearches/realtime?geo=MX&category=all')
+        (self.browser.get('https://trends.google.com.mx/trends/trendingsearches/realtime?geo='
+        +str(geo)+'&category='+str(cat))) #this is the same function lol
+        soup = bf(self.browser.page_source, 'html.parser')
+        details_top = soup.find_all('div', {'class': 'details-top'})
+        #print(details_top)
+        marks = []
+        #print(details_top[0])
+        #print(details_top[0].find('a').text.strip())
+        for i in details_top:
+            a = i.find_all('a')
+            a_list = []
+            for j in a:
+                a_list.append(j.text.strip())
+            marks.append(', '.join(a_list))
+        #print(marks)
+        #print(len(marks))
+        df = pd.Series(marks, index=list(range(len(marks))))
+        #print(df)
+        return df
+
+    def get_trending_daily():
+        """ Send the GET request to trending realtime """
+        (self.browser.get('https://trends.google.com.mx/trends/trendingsearches/realtime?geo='
+        +str(geo)+'&category='+str(cat))) #this is the same function lol
+        soup = bf(self.browser.page_source, 'html.parser')
 
     def no_mames(self):
         """ This is a test function :v """
@@ -38,5 +64,6 @@ class LoadFirefox:
 if(__name__=='__main__'):
     browser = LoadFirefox('/home/jose/Dropbox/Drivers/geckodriver')
     browser.no_mames()
-    browser.get_trending_realtime()
+    data = browser.get_trending_realtime()
+    data.to_csv('../prueba.csv')
     input('Press any key')
