@@ -1,2 +1,5 @@
 #Ignores the geckodriver log
 geckodriver.log
+
+#ignore all .html in the repo
+*.html
