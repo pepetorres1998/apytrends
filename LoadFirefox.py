@@ -61,13 +61,20 @@ class LoadFirefox:
         #print(details_top)
         a = [i.find_element_by_tag_name('a').text for i in details_top]
         b = [j.text for j in count_title]
-        links_news = [k.find_element_by_tag_name('a').get_attribute('href') for k in summary_text]
-        c = _NewsSeo(links_news[0], self.driver)
-        print(a)
-        print()
-        print(b)
-        print()
-        print(c.metas)
+        c = [k.find_element_by_tag_name('a').text for k in summary_text]
+        #links_news = [k.find_element_by_tag_name('a').get_attribute('href') for k in summary_text]
+        #c = _NewsSeo(links_news[0], self.driver)
+        #print(a)
+        #print()
+        #print(b)
+        #print()
+        #print(c)
+        daily_dict = {
+            'keyword': a,
+            'searches': b,
+            'first_new': c
+        }
+        return pd.DataFrame(daily_dict)
 
 
     def no_mames(self):
@@ -117,5 +124,6 @@ if(__name__=='__main__'):
     browser = LoadFirefox('/home/jose/Dropbox/Drivers/geckodriver')
     browser.no_mames()
     data = browser.get_trending_realtime()
-    browser.get_trending_daily()
+    data2 = browser.get_trending_daily()
+    print(data2)
     input('Press any key')
