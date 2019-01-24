@@ -3,3 +3,8 @@ geckodriver.log
 
 #ignore all .html in the repo
 *.html
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
