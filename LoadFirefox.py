@@ -74,45 +74,6 @@ class LoadFirefox:
         """ This is a test function :v """
         print('no_mames')
 
-class _NewsSeo():
-    """ News SEO information (meta tags) """
-    def __init__(self, link, driver):
-        self.link = link
-        self.browser = self._return_browser(driver)
-        self.metas = self._get_meta()
-
-    def __del__(self):
-        """ Called on garbage recolection, destroy the webdriver window, it can be stoped with an input() """
-        self.browser.close()
-
-    def _return_browser(self, driver):
-        """ Return the browser of webdriver """
-        try:
-            print(driver)
-            #opti = Options()
-            #opti.set_headless(headless=True)
-            br_path = str(driver)
-            #browser = webdriver.Firefox(firefox_options=opti, executable_path=br_path)
-            browser = webdriver.Firefox(executable_path=br_path)
-            print('Headless Browser Invoked!')
-            browser.implicitly_wait(10) #seconds
-            return browser
-        except:
-            print('Exception ocurred when Initializing the browser')
-            browser.close()
-
-    def _get_meta(self):
-        self.browser.get(self.link)
-        metas = self.browser.find_elements_by_tag_name('meta')
-        metas_i = []
-        for i in metas:
-            try:
-                metas_i.append(i.get_attribute('name'))
-            except:
-                continue
-        print(metas_i)
-        return metas
-
 if(__name__=='__main__'):
     browser = LoadFirefox('/home/jose/Dropbox/Drivers/geckodriver')
     browser.no_mames()
